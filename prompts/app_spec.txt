@@ -1,0 +1,594 @@
+<project_specification>
+  <project_name>Trading Journal</project_name>
+
+  <overview>
+    A single-user cryptocurrency trading platform that tracks trades and performance, analyzes trading patterns, imports trade history automatically from exchanges (KuCoin, MEXC, Phemex), and executes trades directly through exchange APIs. This is a portfolio/example project designed to demonstrate proficiency in Java, Maven, and Spring Boot technologies for GitHub showcase.
+  </overview>
+
+  <technology_stack>
+    <frontend>
+      <framework>React</framework>
+      <styling>Tailwind CSS</styling>
+      <state_management>React Context or Redux Toolkit</state_management>
+      <http_client>Axios</http_client>
+      <charts>Recharts or Chart.js</charts>
+    </frontend>
+    <backend>
+      <runtime>Java 17+</runtime>
+      <framework>Spring Boot 3.x</framework>
+      <build_tool>Maven</build_tool>
+      <security>Spring Security with JWT</security>
+      <logging>SLF4J with Logback</logging>
+      <async>CompletableFuture</async>
+      <http_client>OkHttp or Retrofit</http_client>
+    </backend>
+    <database>
+      <type>PostgreSQL</type>
+      <orm>Spring Data JPA with Hibernate</orm>
+      <migrations>Flyway</migrations>
+    </database>
+    <testing>
+      <backend>JUnit 5, Mockito, Spring Boot Test</backend>
+      <frontend>Jest, React Testing Library</frontend>
+      <integration>TestContainers for PostgreSQL</integration>
+    </testing>
+    <external_apis>
+      <exchange name="KuCoin">REST API with API key authentication</exchange>
+      <exchange name="MEXC">REST API with API key authentication</exchange>
+      <exchange name="Phemex">REST API with API key authentication</exchange>
+    </external_apis>
+  </technology_stack>
+
+  <prerequisites>
+    <environment_setup>
+      - Java 17 or higher installed
+      - Maven 3.8+ installed
+      - Node.js 18+ and npm installed
+      - PostgreSQL 14+ running locally or via Docker
+      - Git installed
+    </environment_setup>
+  </prerequisites>
+
+  <feature_count>102</feature_count>
+
+  <security_and_access_control>
+    <user_roles>
+      <role name="user">
+        <permissions>
+          - Full access to all features (single-user app)
+          - Manage exchange API keys
+          - Execute trades
+          - View and manage all positions
+          - Access all reports and analytics
+          - Configure all settings
+        </permissions>
+        <protected_routes>
+          - /* (all routes require authentication)
+        </protected_routes>
+      </role>
+    </user_roles>
+    <authentication>
+      <method>Username/password with JWT tokens</method>
+      <session_timeout>24 hours (configurable)</session_timeout>
+      <password_requirements>Minimum 8 characters, mixed case, numbers</password_requirements>
+    </authentication>
+    <sensitive_operations>
+      - Trade execution requires confirmation dialog
+      - API key changes require password confirmation
+      - Position close/sell requires confirmation
+    </sensitive_operations>
+  </security_and_access_control>
+
+  <core_features>
+    <authentication>
+      - User registration with secure password hashing
+      - User login with JWT token generation
+      - Logout with token invalidation
+      - Session management and automatic token refresh
+      - Password change functionality
+      - Remember me option
+      - Protected route guards
+      - API endpoint authentication
+    </authentication>
+
+    <portfolio_positions_view>
+      - Display all current open positions as landing page
+      - Show positions from all connected exchanges
+      - Display positions opened externally (via exchange UI or other bots)
+      - Real-time position value updates
+      - Position details: entry price, current price, quantity, P&L, P&L percentage
+      - Color coding for profit (green) vs loss (red)
+      - Sort positions by various criteria (P&L, size, exchange, coin)
+      - Filter positions by exchange or coin
+      - Expand position for detailed view
+      - Refresh positions manually
+      - Auto-refresh at configurable intervals
+      - Empty state when no positions
+    </portfolio_positions_view>
+
+    <position_actions>
+      - Cancel order button (for open orders)
+      - Quick sell buttons: 25%, 50%, 75%, 100% of position
+      - Sell percentage of profit only (when position is positive)
+      - Confirmation dialog before any action
+      - Action buttons visible on all positions (including external)
+      - Loading state during action execution
+      - Success/error feedback after action
+      - Disable buttons when action in progress
+      - Handle insufficient balance errors
+      - Handle exchange API errors gracefully
+    </position_actions>
+
+    <trade_execution>
+      - Market order placement
+      - Limit order placement
+      - Stop-loss order placement
+      - Select trading pair from available pairs
+      - Select exchange for order
+      - Enter quantity (with max available balance shown)
+      - Enter price for limit orders
+      - Live price display for selected pair
+      - Live orderbook display (bids and asks)
+      - Order preview before submission
+      - Confirmation dialog with order details
+      - Submit order to exchange
+      - Order success/failure feedback
+      - View pending orders
+      - Cancel pending orders
+    </trade_execution>
+
+    <trade_management>
+      - Auto-import trade history from KuCoin
+      - Auto-import trade history from MEXC
+      - Auto-import trade history from Phemex
+      - Manual trade entry form
+      - Trade fields: date, pair, side (buy/sell), entry price, exit price, quantity, fees
+      - Add notes to trades
+      - Add tags to trades
+      - Categorize trades by strategy
+      - Categorize trades by coin
+      - Categorize trades by exchange
+      - Edit existing trades
+      - Delete trades with confirmation
+      - Trade list view with pagination
+      - Search trades
+      - Filter trades by date range, exchange, coin, strategy, tags
+      - Sort trades by date, P&L, size
+      - Trade detail view
+    </trade_management>
+
+    <dashboard_analytics>
+      - Performance Report generation
+        - Overall P&L (realized + unrealized)
+        - Equity curve chart
+        - Drawdown analysis
+        - Best performing period
+        - Worst performing period
+      - Trade Analysis Report generation
+        - Win/loss ratio
+        - Average win vs average loss
+        - Best trades list
+        - Worst trades list
+        - Performance by coin
+        - Performance by strategy
+        - Performance by exchange
+      - Time period filters: daily, weekly, monthly, all-time
+      - Custom date range selection
+      - Export reports (PDF or CSV)
+      - Dashboard widgets for key metrics
+      - Interactive charts with hover details
+    </dashboard_analytics>
+
+    <exchange_configuration>
+      - Exchange settings page
+      - Add KuCoin API credentials (API key, secret, passphrase)
+      - Add MEXC API credentials (API key, secret)
+      - Add Phemex API credentials (API key, secret)
+      - Test connection button for each exchange
+      - Connection status indicator (connected/disconnected/error)
+      - Remove exchange connection
+      - View exchange balances per exchange
+      - Set default exchange preference
+      - API key encryption at rest
+      - Mask API keys in UI (show only last 4 chars)
+      - Password confirmation required to view/edit API keys
+    </exchange_configuration>
+
+    <settings_preferences>
+      - Default order size setting
+      - Default exchange setting
+      - Notification preferences
+      - Theme preference (light/dark mode)
+      - Auto-refresh interval setting
+      - Timezone setting
+    </settings_preferences>
+
+    <error_handling>
+      - Network failure graceful handling
+      - Exchange API rate limit handling with retry
+      - Exchange connection failure alerts
+      - Invalid API key error messages
+      - Insufficient balance errors
+      - Order rejection error handling
+      - Loading states for all async operations
+      - User-friendly error messages (no technical jargon)
+    </error_handling>
+  </core_features>
+
+  <database_schema>
+    <tables>
+      <users>
+        - id (UUID, primary key)
+        - username (unique, not null)
+        - password_hash (not null)
+        - email (unique)
+        - created_at (timestamp)
+        - updated_at (timestamp)
+        - last_login (timestamp)
+      </users>
+
+      <exchange_connections>
+        - id (UUID, primary key)
+        - user_id (foreign key to users)
+        - exchange_name (enum: KUCOIN, MEXC, PHEMEX)
+        - api_key_encrypted (not null)
+        - api_secret_encrypted (not null)
+        - api_passphrase_encrypted (nullable, for KuCoin)
+        - is_active (boolean)
+        - last_sync (timestamp)
+        - created_at (timestamp)
+        - updated_at (timestamp)
+      </exchange_connections>
+
+      <trades>
+        - id (UUID, primary key)
+        - user_id (foreign key to users)
+        - exchange_connection_id (foreign key)
+        - external_trade_id (from exchange)
+        - symbol (trading pair, e.g., BTC/USDT)
+        - side (enum: BUY, SELL)
+        - entry_price (decimal)
+        - exit_price (decimal, nullable)
+        - quantity (decimal)
+        - fees (decimal)
+        - fee_currency (string)
+        - realized_pnl (decimal, nullable)
+        - status (enum: OPEN, CLOSED, CANCELLED)
+        - notes (text, nullable)
+        - strategy (string, nullable)
+        - is_imported (boolean)
+        - trade_date (timestamp)
+        - created_at (timestamp)
+        - updated_at (timestamp)
+      </trades>
+
+      <trade_tags>
+        - id (UUID, primary key)
+        - trade_id (foreign key to trades)
+        - tag_name (string)
+      </trade_tags>
+
+      <positions>
+        - id (UUID, primary key)
+        - user_id (foreign key to users)
+        - exchange_connection_id (foreign key)
+        - symbol (trading pair)
+        - side (enum: LONG, SHORT)
+        - entry_price (decimal)
+        - quantity (decimal)
+        - current_price (decimal)
+        - unrealized_pnl (decimal)
+        - unrealized_pnl_percent (decimal)
+        - is_external (boolean, true if opened outside app)
+        - opened_at (timestamp)
+        - last_updated (timestamp)
+      </positions>
+
+      <orders>
+        - id (UUID, primary key)
+        - user_id (foreign key to users)
+        - exchange_connection_id (foreign key)
+        - external_order_id (from exchange)
+        - symbol (trading pair)
+        - side (enum: BUY, SELL)
+        - order_type (enum: MARKET, LIMIT, STOP_LOSS)
+        - price (decimal, nullable for market)
+        - quantity (decimal)
+        - filled_quantity (decimal)
+        - status (enum: PENDING, FILLED, PARTIALLY_FILLED, CANCELLED, REJECTED)
+        - created_at (timestamp)
+        - updated_at (timestamp)
+      </orders>
+
+      <user_settings>
+        - id (UUID, primary key)
+        - user_id (foreign key to users, unique)
+        - default_exchange (enum, nullable)
+        - default_order_size (decimal, nullable)
+        - theme (enum: LIGHT, DARK)
+        - auto_refresh_interval (integer, seconds)
+        - timezone (string)
+        - created_at (timestamp)
+        - updated_at (timestamp)
+      </user_settings>
+
+      <strategies>
+        - id (UUID, primary key)
+        - user_id (foreign key to users)
+        - name (string, unique per user)
+        - description (text, nullable)
+        - created_at (timestamp)
+      </strategies>
+    </tables>
+  </database_schema>
+
+  <api_endpoints_summary>
+    <authentication>
+      - POST /api/auth/register
+      - POST /api/auth/login
+      - POST /api/auth/logout
+      - POST /api/auth/refresh
+      - PUT /api/auth/password
+    </authentication>
+
+    <users>
+      - GET /api/users/me
+      - PUT /api/users/me
+    </users>
+
+    <exchanges>
+      - GET /api/exchanges
+      - POST /api/exchanges
+      - GET /api/exchanges/{id}
+      - PUT /api/exchanges/{id}
+      - DELETE /api/exchanges/{id}
+      - POST /api/exchanges/{id}/test
+      - GET /api/exchanges/{id}/balances
+    </exchanges>
+
+    <positions>
+      - GET /api/positions
+      - GET /api/positions/{id}
+      - POST /api/positions/{id}/close
+      - POST /api/positions/{id}/sell-percentage
+    </positions>
+
+    <orders>
+      - GET /api/orders
+      - POST /api/orders
+      - GET /api/orders/{id}
+      - DELETE /api/orders/{id}
+    </orders>
+
+    <trades>
+      - GET /api/trades
+      - POST /api/trades
+      - GET /api/trades/{id}
+      - PUT /api/trades/{id}
+      - DELETE /api/trades/{id}
+      - POST /api/trades/import/{exchangeId}
+    </trades>
+
+    <market_data>
+      - GET /api/market/{exchangeId}/pairs
+      - GET /api/market/{exchangeId}/ticker/{symbol}
+      - GET /api/market/{exchangeId}/orderbook/{symbol}
+    </market_data>
+
+    <analytics>
+      - GET /api/analytics/performance
+      - GET /api/analytics/trade-analysis
+      - GET /api/analytics/export
+    </analytics>
+
+    <settings>
+      - GET /api/settings
+      - PUT /api/settings
+    </settings>
+
+    <strategies>
+      - GET /api/strategies
+      - POST /api/strategies
+      - PUT /api/strategies/{id}
+      - DELETE /api/strategies/{id}
+    </strategies>
+  </api_endpoints_summary>
+
+  <ui_layout>
+    <main_structure>
+      - Responsive layout with collapsible sidebar on left
+      - Main content area on right
+      - Top header with user menu, notifications, and quick actions
+      - Footer with connection status indicators
+    </main_structure>
+
+    <navigation_sidebar>
+      - Logo/brand at top
+      - Portfolio (landing page - current positions)
+      - Trade (order execution)
+      - History (trade list and management)
+      - Analytics (dashboard and reports)
+      - Exchanges (configuration)
+      - Settings
+    </navigation_sidebar>
+
+    <key_pages>
+      - Login/Register page
+      - Portfolio page (positions grid/table)
+      - Trade page (order form + live prices + orderbook)
+      - Trade History page (filterable trade list)
+      - Trade Detail page
+      - Analytics Dashboard page
+      - Performance Report page
+      - Trade Analysis Report page
+      - Exchange Configuration page
+      - Settings page
+    </key_pages>
+  </ui_layout>
+
+  <design_system>
+    <color_palette>
+      - Primary: Blue (#3B82F6)
+      - Success/Profit: Green (#10B981)
+      - Danger/Loss: Red (#EF4444)
+      - Warning: Amber (#F59E0B)
+      - Background Light: White (#FFFFFF)
+      - Background Dark: Slate (#1E293B)
+      - Text Light: Slate (#334155)
+      - Text Dark: Slate (#F1F5F9)
+    </color_palette>
+    <typography>
+      - Font Family: Inter or system fonts
+      - Monospace for prices/numbers: JetBrains Mono or Fira Code
+    </typography>
+    <components>
+      - Consistent card-based design for data display
+      - Clear button hierarchy (primary, secondary, danger)
+      - Toast notifications for feedback
+      - Modal dialogs for confirmations
+      - Skeleton loaders for loading states
+    </components>
+  </design_system>
+
+  <implementation_steps>
+    <step number="1">
+      <title>Project Setup and Authentication</title>
+      <tasks>
+        - Initialize Spring Boot project with Maven
+        - Set up PostgreSQL connection and Flyway migrations
+        - Implement user entity and repository
+        - Implement Spring Security with JWT
+        - Create auth endpoints (register, login, logout)
+        - Initialize React project with Tailwind CSS
+        - Create login and registration pages
+        - Implement auth context and protected routes
+      </tasks>
+    </step>
+
+    <step number="2">
+      <title>Exchange Integration Foundation</title>
+      <tasks>
+        - Create exchange connection entity and encryption service
+        - Implement exchange configuration endpoints
+        - Build exchange API client interfaces
+        - Implement KuCoin API client
+        - Implement MEXC API client
+        - Implement Phemex API client
+        - Create exchange configuration UI
+        - Add connection test functionality
+      </tasks>
+    </step>
+
+    <step number="3">
+      <title>Portfolio and Positions</title>
+      <tasks>
+        - Create position entity and repository
+        - Implement position sync from exchanges
+        - Build positions API endpoints
+        - Create portfolio page UI
+        - Display positions with real-time updates
+        - Implement position action buttons (cancel, sell %)
+        - Add confirmation dialogs
+      </tasks>
+    </step>
+
+    <step number="4">
+      <title>Trade Execution</title>
+      <tasks>
+        - Create order entity and repository
+        - Implement order placement to exchanges
+        - Build market data endpoints (ticker, orderbook)
+        - Create trade execution page UI
+        - Implement order form with validation
+        - Add live price and orderbook display
+        - Implement order confirmation flow
+      </tasks>
+    </step>
+
+    <step number="5">
+      <title>Trade Management</title>
+      <tasks>
+        - Create trade entity with tags
+        - Implement trade import from exchanges
+        - Build trade CRUD endpoints
+        - Create trade history page UI
+        - Implement manual trade entry
+        - Add filtering, sorting, search
+        - Create trade detail/edit page
+      </tasks>
+    </step>
+
+    <step number="6">
+      <title>Analytics and Reports</title>
+      <tasks>
+        - Implement analytics calculation service
+        - Build analytics API endpoints
+        - Create dashboard page with widgets
+        - Implement performance report
+        - Implement trade analysis report
+        - Add charts and visualizations
+        - Implement export functionality
+      </tasks>
+    </step>
+
+    <step number="7">
+      <title>Settings and Polish</title>
+      <tasks>
+        - Create settings entity and endpoints
+        - Build settings page UI
+        - Implement theme switching (light/dark)
+        - Add comprehensive error handling
+        - Implement loading states everywhere
+        - Add toast notifications
+        - Responsive design refinements
+      </tasks>
+    </step>
+
+    <step number="8">
+      <title>Testing and Documentation</title>
+      <tasks>
+        - Write unit tests for services
+        - Write integration tests with TestContainers
+        - Write API tests for all endpoints
+        - Write frontend component tests
+        - Create comprehensive README
+        - Add API documentation (OpenAPI/Swagger)
+        - Final testing and bug fixes
+      </tasks>
+    </step>
+  </implementation_steps>
+
+  <success_criteria>
+    <functionality>
+      - User can register, login, and manage their session
+      - User can connect to KuCoin, MEXC, and Phemex exchanges
+      - User can view all positions including external ones
+      - User can execute market, limit, and stop-loss orders
+      - User can cancel orders and sell percentages of positions
+      - User can import and manually add trades
+      - User can view performance and trade analysis reports
+      - All data persists correctly in PostgreSQL
+    </functionality>
+    <user_experience>
+      - Clean, intuitive interface following modern design patterns
+      - Responsive design works on desktop and tablet
+      - All actions provide clear feedback (loading, success, error)
+      - Confirmation dialogs prevent accidental actions
+      - Real-time or near-real-time data updates
+    </user_experience>
+    <technical_quality>
+      - Clean, well-organized code following Java/Spring conventions
+      - Comprehensive test coverage (>80%)
+      - Proper error handling and logging throughout
+      - Secure API key storage with encryption
+      - Well-documented API with OpenAPI/Swagger
+      - No hardcoded mock data - all real database/API data
+    </technical_quality>
+    <design_polish>
+      - Consistent color scheme and typography
+      - Professional appearance suitable for portfolio showcase
+      - Smooth transitions and animations
+      - Clear visual hierarchy and information architecture
+    </design_polish>
+  </success_criteria>
+</project_specification>
